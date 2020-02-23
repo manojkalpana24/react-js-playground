@@ -21,3 +21,5 @@ yarn-debug.log*
 yarn-error.log*
 
 redux-test.js
+
+package-lock.json
