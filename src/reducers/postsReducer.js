@@ -1,6 +1,6 @@
 /**
  * Don't modify 'state' argument
- * Because redux combineReducers internally checks for previous 'state' and current 'state' in memory, so it doen't update the react app if the current returned 'state' and the previous returned 'state' is same
+ * Because redux combineReducers internally checks for previous 'state' and current 'state' in memory, so it doesn't update the react app if the current returned 'state' and the previous returned 'state' is same
  * Always return new array or object
  */
 export const postsReducer = (state = [], action) => {

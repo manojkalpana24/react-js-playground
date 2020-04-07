@@ -11,7 +11,7 @@ class PostList extends React.Component {
 
   renderList() {
     // mapStatesToProps holds 'posts' object
-    return this.props.posts.map(post => {
+    return this.props.posts.map((post) => {
       return (
         <div className="item" key={post.id}>
           <i className="large middle aligned icon user" />
@@ -40,7 +40,7 @@ class PostList extends React.Component {
   }
 }
 
-const mapStatesToProps = state => {
+const mapStatesToProps = (state) => {
   // State property has access to all the reducers key:value refer combineReducers in reducers/index.js
   return { posts: state.posts };
 };

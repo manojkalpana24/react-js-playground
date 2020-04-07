@@ -12,11 +12,13 @@ import { combineReducers } from "redux";
 import {
   postsReducer,
   selectedPostReducer,
-  usersReducer
+  usersReducer,
 } from "./postsReducer";
+import { reducer as formReducer } from "redux-form";
 
 export default combineReducers({
   posts: postsReducer,
   selectedPost: selectedPostReducer,
-  users: usersReducer
+  users: usersReducer,
+  form: formReducer,
 });
