@@ -1,0 +1,26 @@
+{
+  "posts": [
+    {
+      "title": "ddd",
+      "description": "cfd",
+      "user_id": 2,
+      "id": 1
+    },
+    {
+      "title": "test",
+      "description": "test",
+      "user_id": 2,
+      "id": 2
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Manoj"
+    },
+    {
+      "id": 2,
+      "name": "Thor"
+    }
+  ]
+}

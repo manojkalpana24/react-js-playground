@@ -1,69 +1,22 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import { createPost } from "../../actions/postsAction";
+import { connect } from "react-redux";
+import PostForm from "./PostForm";
 
 class PostCreate extends React.Component {
-  renderError({ error, touched }) {
-    if (error && touched) {
-      return (
-        <div className="field error">
-          <label>{error}</label>
-        </div>
-      );
-    }
-  }
-
-  renderInput = ({ input, label, meta }) => {
-    const className = `field ${meta.error && meta.touched ? "error" : ""}`;
-    return (
-      <div className={className}>
-        <label>{label}</label>
-        <input {...input} autoComplete="off" />
-        {this.renderError(meta)}
-      </div>
-    );
+  onSubmit = (formValues) => {
+    formValues.user_id = 2;
+    this.props.createPost(formValues);
   };
-
-  onSubmit(formValues) {
-    console.log(formValues);
-  }
 
   render() {
     return (
-      <form
-        className="ui form error"
-        onSubmit={this.props.handleSubmit(this.onSubmit)}
-      >
-        <Field
-          name="title"
-          component={this.renderInput}
-          label="Enter title"
-        ></Field>
-        <Field
-          name="description"
-          component={this.renderInput}
-          label="Enter description"
-        ></Field>
-        <button className="ui button primary">Submit</button>
-      </form>
+      <div>
+        <h3>Create a Post</h3>
+        <PostForm onSubmit={this.onSubmit}></PostForm>
+      </div>
     );
   }
 }
 
-const validate = (formValues) => {
-  const errors = {};
-
-  if (!formValues.title) {
-    errors.title = "You must enter a title";
-  }
-
-  if (!formValues.description) {
-    errors.description = "You must enter a description";
-  }
-
-  return errors;
-};
-
-export default reduxForm({
-  form: "postCreate",
-  validate,
-})(PostCreate);
+export default connect(null, { createPost })(PostCreate);

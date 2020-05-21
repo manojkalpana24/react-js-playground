@@ -10,15 +10,15 @@ const PostDetail = ({ post }) => {
     <div className="description">
       <h2>{post.title}</h2>
       <br />
-      <p>{post.body}</p>
+      <p>{post.description}</p>
     </div>
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   // State property has access to all the reducers key:value refer combineReducers in reducers/index.js
   return {
-    post: state.selectedPost
+    post: state.selectedPost,
   };
 };
 
