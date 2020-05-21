@@ -64,6 +64,7 @@ export const deletePost = (id) => async (dispatch, getState) => {
     type: "DELETE_POST",
     payload: id,
   });
+  history.push("/posts/list");
 };
 
 /**

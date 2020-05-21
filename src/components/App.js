@@ -7,6 +7,7 @@ import "./App.css";
 import PostCreate from "./posts/PostCreate";
 import PostEdit from "./posts/PostEdit";
 import history from "../history";
+import PostDelete from "./posts/PostDelete";
 
 const Home = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/" exact component={Home}></Route>
           <Route path="/posts/create" component={PostCreate}></Route>
           <Route path="/posts/edit/:id" exact component={PostEdit}></Route>
+          <Route path="/posts/delete/:id" component={PostDelete}></Route>
           <Route path="/posts/list">
             <div className="ui two column padded grid">
               <div
