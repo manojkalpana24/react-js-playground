@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { fetchPost, editPost } from "../../actions/postsAction";
 import PostForm from "./PostForm";
+import LanguageContext from "../../contexts/LanguageContext";
 
 class PostEdit extends React.Component {
   componentDidMount() {
@@ -19,7 +20,11 @@ class PostEdit extends React.Component {
     }
     return (
       <div>
-        <h3>Edit a Post</h3>
+        <h3>
+          <LanguageContext.Consumer>
+            {(value) => (value === "english" ? "Edit a Post" : "எடிட் போஸ்ட்")}
+          </LanguageContext.Consumer>
+        </h3>
         <PostForm
           initialValues={_.pick(this.props.post, "title", "description")}
           onSubmit={this.onSubmit}

@@ -1,5 +1,12 @@
 {
-  "posts": [],
+  "posts": [
+    {
+      "title": "asd",
+      "description": "asd",
+      "user_id": 2,
+      "id": 1
+    }
+  ],
   "users": [
     {
       "id": 1,

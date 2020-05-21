@@ -1,7 +1,10 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import LanguageContext from "../../contexts/LanguageContext";
 
 class PostForm extends React.Component {
+  // Special property
+  static contextType = LanguageContext;
   renderError({ error, touched }) {
     if (error && touched) {
       return (
@@ -29,6 +32,11 @@ class PostForm extends React.Component {
   };
 
   render() {
+    const buttonText =
+      this.context === "english" ? "Submit" : "சமர்ப்பிக்கவும்";
+    const titleText = this.context === "english" ? "Title" : "தலைப்பு";
+    const descriptionText =
+      this.context === "english" ? "Description" : "விளக்கம்";
     return (
       <form
         className="ui form error"
@@ -37,14 +45,14 @@ class PostForm extends React.Component {
         <Field
           name="title"
           component={this.renderInput}
-          label="Enter title"
+          label={titleText}
         ></Field>
         <Field
           name="description"
           component={this.renderInput}
-          label="Enter description"
+          label={descriptionText}
         ></Field>
-        <button className="ui button primary">Submit</button>
+        <button className="ui button primary">{buttonText}</button>
       </form>
     );
   }
