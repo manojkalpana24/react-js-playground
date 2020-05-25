@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Field, reduxForm } from "redux-form";
 import LanguageContext from "../../contexts/LanguageContext";
 
-class PostForm extends React.Component {
+const PostForm = (props) => {
   // Special property
-  static contextType = LanguageContext;
-  renderError({ error, touched }) {
+  const language = useContext(LanguageContext);
+  const renderError = ({ error, touched }) => {
     if (error && touched) {
       return (
         <div className="field error">
@@ -13,50 +13,40 @@ class PostForm extends React.Component {
         </div>
       );
     }
-  }
+  };
 
-  renderInput = ({ input, label, meta }) => {
+  const renderInput = ({ input, label, meta }) => {
     const className = `field ${meta.error && meta.touched ? "error" : ""}`;
     return (
       <div className={className}>
         <label>{label}</label>
         <input {...input} autoComplete="off" />
-        {this.renderError(meta)}
+        {renderError(meta)}
       </div>
     );
   };
 
-  onSubmit = (formValues) => {
+  const onSubmit = (formValues) => {
     formValues.user_id = 2;
-    this.props.onSubmit(formValues);
+    props.onSubmit(formValues);
   };
 
-  render() {
-    const buttonText =
-      this.context === "english" ? "Submit" : "சமர்ப்பிக்கவும்";
-    const titleText = this.context === "english" ? "Title" : "தலைப்பு";
-    const descriptionText =
-      this.context === "english" ? "Description" : "விளக்கம்";
-    return (
-      <form
-        className="ui form error"
-        onSubmit={this.props.handleSubmit(this.onSubmit)}
-      >
-        <Field
-          name="title"
-          component={this.renderInput}
-          label={titleText}
-        ></Field>
-        <Field
-          name="description"
-          component={this.renderInput}
-          label={descriptionText}
-        ></Field>
-        <button className="ui button primary">{buttonText}</button>
-      </form>
-    );
-  }
-}
+  const buttonText = language === "english" ? "Submit" : "சமர்ப்பிக்கவும்";
+  const titleText = language === "english" ? "Title" : "தலைப்பு";
+  const descriptionText = language === "english" ? "Description" : "விளக்கம்";
+
+  return (
+    <form className="ui form error" onSubmit={props.handleSubmit(onSubmit)}>
+      <Field name="title" component={renderInput} label={titleText}></Field>
+      <Field
+        name="description"
+        component={renderInput}
+        label={descriptionText}
+      ></Field>
+      <button className="ui button primary">{buttonText}</button>
+    </form>
+  );
+};
 
 const validate = (formValues) => {
   const errors = {};

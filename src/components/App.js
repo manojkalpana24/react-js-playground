@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Router, Route, Link } from "react-router-dom";
 import Header from "./Header";
 import PostDetail from "./posts/PostDetail";
@@ -25,58 +25,64 @@ const PageNotFound = () => {
   return <div></div>;
 };
 
-class App extends React.Component {
-  state = { language: "english" };
+const SelectLanguage = (props) => {
+  return (
+    <div style={{ margin: "10px" }}>
+      Select a language:
+      <i
+        className="flag us"
+        onClick={() => props.onLanguageChange("english")}
+      />
+      <i className="flag in" onClick={() => props.onLanguageChange("tamil")} />
+    </div>
+  );
+};
 
-  onLanguageChange = (language) => {
-    this.setState({ language });
-  };
-  render() {
-    return (
-      <div className="ui container">
-        <Router history={history}>
-          <div style={{ margin: "10px" }}>
-            Select a language:
-            <i
-              className="flag us"
-              onClick={() => this.onLanguageChange("english")}
-            />
-            <i
-              className="flag in"
-              onClick={() => this.onLanguageChange("tamil")}
-            />
-          </div>
-          <LanguageContext.Provider value={this.state.language}>
-            <Header></Header>
-            <div className="main-content">
-              <Route path="/" exact component={Home}></Route>
-              <Route path="/posts/create" component={PostCreate}></Route>
-              <Route path="/posts/edit/:id" exact component={PostEdit}></Route>
-              <Route path="/posts/delete/:id" component={PostDelete}></Route>
-              <Route path="/posts/list">
-                <div className="ui two column padded grid">
-                  <div
-                    className="column"
-                    style={{
-                      maxHeight: "600px",
-                      overflowX: "scroll",
-                      width: "300px",
-                    }}
-                  >
-                    <PostList></PostList>
-                  </div>
-                  <div className="column">
-                    <PostDetail></PostDetail>
-                  </div>
-                </div>
-              </Route>
-              <Route path="**" component={PageNotFound}></Route>
-            </div>
-          </LanguageContext.Provider>
-        </Router>
+const PostListLayout = () => {
+  return (
+    <div className="ui two column padded grid">
+      <div
+        className="column"
+        style={{
+          maxHeight: "600px",
+          overflowX: "scroll",
+          width: "300px",
+        }}
+      >
+        <PostList></PostList>
       </div>
-    );
-  }
-}
+      <div className="column">
+        <PostDetail></PostDetail>
+      </div>
+    </div>
+  );
+};
+
+const App = () => {
+  const [language, setLanguage] = useState("english");
+
+  const onLanguageChange = (language) => {
+    setLanguage(language);
+  };
+
+  return (
+    <div className="ui container">
+      <Router history={history}>
+        <SelectLanguage onLanguageChange={onLanguageChange}></SelectLanguage>
+        <LanguageContext.Provider value={language}>
+          <Header></Header>
+          <div className="main-content">
+            <Route path="/" exact component={Home}></Route>
+            <Route path="/posts/create" component={PostCreate}></Route>
+            <Route path="/posts/edit/:id" exact component={PostEdit}></Route>
+            <Route path="/posts/delete/:id" component={PostDelete}></Route>
+            <Route path="/posts/list" component={PostListLayout}></Route>
+            <Route path="/**" exact component={PageNotFound}></Route>
+          </div>
+        </LanguageContext.Provider>
+      </Router>
+    </div>
+  );
+};
 
 export default App;

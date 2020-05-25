@@ -1,28 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 // Actions
 import { fetchPostsAndUsers, selectPost } from "../../actions/postsAction";
 import UserHeader from "./UserHeader";
 import { Link } from "react-router-dom";
 
-class PostList extends React.Component {
-  componentDidMount() {
-    this.props.fetchPostsAndUsers();
-  }
+const PostList = (props) => {
+  useEffect(() => {
+    props.fetchPostsAndUsers();
+  }, []);
 
-  renderList() {
+  const renderList = () => {
     // mapStatesToProps holds 'posts' object
-    if (this.props.posts.length <= 0) {
+    if (props.posts.length <= 0) {
       return (
         <div>
           <h4>No posts found</h4>
         </div>
       );
     }
-    return this.props.posts.map((post) => {
+    return props.posts.map((post) => {
       return (
         <div className="ui raised link card" key={post.id}>
-          <div className="content" onClick={() => this.props.selectPost(post)}>
+          <div className="content" onClick={() => props.selectPost(post)}>
             <div className="header">{post.title}</div>
             <div
               className="description"
@@ -51,12 +51,10 @@ class PostList extends React.Component {
         </div>
       );
     });
-  }
+  };
 
-  render() {
-    return <div>{this.renderList()}</div>;
-  }
-}
+  return <div>{renderList()}</div>;
+};
 
 const mapStatesToProps = (state) => {
   // State property has access to all the reducers key:value refer combineReducers in reducers/index.js

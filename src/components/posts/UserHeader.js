@@ -1,20 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 
-class UserHeader extends React.Component {
-  render() {
-    const { user } = this.props;
-    if (!user) {
-      return null;
-    }
-    return (
-      <div className="left floated author">
-        <img className="ui avatar image" src="/matthew.png" alt="" />
-        {user.name}
-      </div>
-    );
+const UserHeader = ({ user }) => {
+  if (!user) {
+    return null;
   }
-}
+  return (
+    <div className="left floated author">
+      <img className="ui avatar image" src="/matthew.png" alt="" />
+      {user.name}
+    </div>
+  );
+};
 
 const mapStateToProps = (state, ownProps) => {
   // State property has access to all the reducers key:value refer combineReducers in reducers/index.js

@@ -1,38 +1,36 @@
 import _ from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchPost, editPost } from "../../actions/postsAction";
 import PostForm from "./PostForm";
 import LanguageContext from "../../contexts/LanguageContext";
 
-class PostEdit extends React.Component {
-  componentDidMount() {
-    this.props.fetchPost(this.props.match.params.id);
-  }
+const PostEdit = (props) => {
+  useEffect(() => {
+    props.fetchPost(props.match.params.id);
+  }, []);
 
-  onSubmit = (formValues) => {
-    this.props.editPost(this.props.match.params.id, formValues);
+  const onSubmit = (formValues) => {
+    props.editPost(props.match.params.id, formValues);
   };
 
-  render() {
-    if (!this.props.post) {
-      return <div>Loading...</div>;
-    }
-    return (
-      <div>
-        <h3>
-          <LanguageContext.Consumer>
-            {(value) => (value === "english" ? "Edit a Post" : "எடிட் போஸ்ட்")}
-          </LanguageContext.Consumer>
-        </h3>
-        <PostForm
-          initialValues={_.pick(this.props.post, "title", "description")}
-          onSubmit={this.onSubmit}
-        ></PostForm>
-      </div>
-    );
+  if (!props.post) {
+    return <div>Loading...</div>;
   }
-}
+  return (
+    <div>
+      <h3>
+        <LanguageContext.Consumer>
+          {(value) => (value === "english" ? "Edit a Post" : "எடிட் போஸ்ட்")}
+        </LanguageContext.Consumer>
+      </h3>
+      <PostForm
+        initialValues={_.pick(props.post, "title", "description")}
+        onSubmit={onSubmit}
+      ></PostForm>
+    </div>
+  );
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
