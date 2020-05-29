@@ -1,11 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback, useEffect } from "react";
 import { Field, reduxForm } from "redux-form";
 import LanguageContext from "../../contexts/LanguageContext";
 
 const PostForm = (props) => {
-  // Special property
+  // Special property (equal to static contextType = LanguageContext)
   const language = useContext(LanguageContext);
-  const renderError = ({ error, touched }) => {
+  const buttonText = language === "english" ? "Submit" : "சமர்ப்பிக்கவும்";
+  const titleText = language === "english" ? "Title" : "தலைப்பு";
+  const descriptionText = language === "english" ? "Description" : "விளக்கம்";
+
+  useEffect(() => {});
+
+  const onSubmit = (formValues) => {
+    formValues.user_id = 2;
+    props.onSubmit(formValues);
+  };
+
+  const renderError = useCallback(({ error, touched }) => {
     if (error && touched) {
       return (
         <div className="field error">
@@ -13,31 +24,27 @@ const PostForm = (props) => {
         </div>
       );
     }
-  };
+  }, []);
 
-  const renderInput = ({ input, label, meta }) => {
+  const renderInput = useCallback(({ input, autoFocus, label, meta }) => {
     const className = `field ${meta.error && meta.touched ? "error" : ""}`;
     return (
       <div className={className}>
         <label>{label}</label>
-        <input {...input} autoComplete="off" />
+        <input {...input} autoFocus={autoFocus} autoComplete="off" />
         {renderError(meta)}
       </div>
     );
-  };
-
-  const onSubmit = (formValues) => {
-    formValues.user_id = 2;
-    props.onSubmit(formValues);
-  };
-
-  const buttonText = language === "english" ? "Submit" : "சமர்ப்பிக்கவும்";
-  const titleText = language === "english" ? "Title" : "தலைப்பு";
-  const descriptionText = language === "english" ? "Description" : "விளக்கம்";
+  }, []);
 
   return (
     <form className="ui form error" onSubmit={props.handleSubmit(onSubmit)}>
-      <Field name="title" component={renderInput} label={titleText}></Field>
+      <Field
+        name="title"
+        autoFocus={true}
+        component={renderInput}
+        label={titleText}
+      ></Field>
       <Field
         name="description"
         component={renderInput}

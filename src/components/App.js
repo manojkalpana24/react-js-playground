@@ -1,29 +1,18 @@
-import React, { useState } from "react";
-import { Router, Route, Link } from "react-router-dom";
+import React, { useState, Suspense } from "react";
+import { Router, Route, Switch } from "react-router-dom";
 import Header from "./Header";
-import PostDetail from "./posts/PostDetail";
-import PostList from "./posts/PostList";
-import "./App.css";
-import PostCreate from "./posts/PostCreate";
-import PostEdit from "./posts/PostEdit";
 import history from "../history";
-import PostDelete from "./posts/PostDelete";
 import LanguageContext from "../contexts/LanguageContext";
+import Loading from "./Loading";
+import "./App.css";
 
-const Home = () => {
-  return (
-    <div className="home">
-      <h1>React-Redux Boilerplate</h1>
-      <Link to="/posts/create">
-        <button className="ui basic button">Create Post</button>
-      </Link>
-    </div>
-  );
-};
-
-const PageNotFound = () => {
-  return <div></div>;
-};
+const Home = React.lazy(() => import("./Home"));
+const PageNotFound = React.lazy(() => import("./PageNotFound"));
+const PostDetail = React.lazy(() => import("./posts/PostDetail"));
+const PostList = React.lazy(() => import("./posts/PostList"));
+const PostDelete = React.lazy(() => import("./posts/PostDelete"));
+const PostCreate = React.lazy(() => import("./posts/PostCreate"));
+const PostEdit = React.lazy(() => import("./posts/PostEdit"));
 
 const SelectLanguage = (props) => {
   return (
@@ -67,20 +56,28 @@ const App = () => {
 
   return (
     <div className="ui container">
-      <Router history={history}>
-        <SelectLanguage onLanguageChange={onLanguageChange}></SelectLanguage>
-        <LanguageContext.Provider value={language}>
-          <Header></Header>
-          <div className="main-content">
-            <Route path="/" exact component={Home}></Route>
-            <Route path="/posts/create" component={PostCreate}></Route>
-            <Route path="/posts/edit/:id" exact component={PostEdit}></Route>
-            <Route path="/posts/delete/:id" component={PostDelete}></Route>
-            <Route path="/posts/list" component={PostListLayout}></Route>
-            <Route path="/**" exact component={PageNotFound}></Route>
-          </div>
-        </LanguageContext.Provider>
-      </Router>
+      <Suspense fallback={<Loading />}>
+        <Router history={history}>
+          <SelectLanguage onLanguageChange={onLanguageChange}></SelectLanguage>
+          <LanguageContext.Provider value={language}>
+            <Header></Header>
+            <div className="main-content">
+              <Switch>
+                <Route path="/" exact component={Home}></Route>
+                <Route path="/posts/create" component={PostCreate}></Route>
+                <Route
+                  path="/posts/edit/:id"
+                  exact
+                  component={PostEdit}
+                ></Route>
+                <Route path="/posts/delete/:id" component={PostDelete}></Route>
+                <Route path="/posts/list" component={PostListLayout}></Route>
+                <Route path="/**" exact component={PageNotFound}></Route>
+              </Switch>
+            </div>
+          </LanguageContext.Provider>
+        </Router>
+      </Suspense>
     </div>
   );
 };
